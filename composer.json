@@ -1,0 +1,14 @@
+{
+    "name": "buxus/bql",
+  "autoload": {
+    "psr-4": {
+      "Buxus\\Bql\\": "src/"
+    }
+  },
+  "version": "dev-master",
+   "require": {
+        "buxus/pages": "*",
+        "doctrine/orm": "*",
+	      "greenlion/php-sql-parser": "*"
+    }
+}
