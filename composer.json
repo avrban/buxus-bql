@@ -9,6 +9,7 @@
    "require": {
         "buxus/pages": "*",
         "doctrine/orm": "*",
-	      "greenlion/php-sql-parser": "*"
+	"greenlion/php-sql-parser": "*",
+	"fpdo/fluentpdo": "dev-master"
     }
 }
