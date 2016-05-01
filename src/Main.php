@@ -21,6 +21,9 @@ class Main
         $walker=new SqlWalker($parsed,0);
         $sql=$walker->getSQL();
         echo $sql."\n";
+
+       /* $qb=new QueryBuilder();
+        echo $qb->from('eshop_product')->where('eshop_eur_price_without_vat >',100)->getSQL();*/
     }
 }
 ?>

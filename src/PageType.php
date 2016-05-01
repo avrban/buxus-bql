@@ -1,5 +1,6 @@
 <?php
-/**Created by PhpStorm.
+/**
+ * Created by PhpStorm.
  * User: avrban
  * Date: 21.03.2016
  * Time: 20:25
@@ -10,9 +11,9 @@ namespace Buxus\Bql;
 use Buxus\Property;
 
 /**
- * Trieda reprezentuje typy stranok vyskytujuce sa v spracovavanom dopyte
+ * Trieda reprezentuje typy stranok vyskytujuce sa v spracovavanom dopyte (v dopyte sa vyskytuju ako tabulky)
  * a poskytuje metody na pridavanie a vyber vlastnosti patriacich k danemu typu stranok.
- * 
+ *
  * @package Buxus\Bql
  */
 class PageType
@@ -106,12 +107,13 @@ class PageType
 
         if($pm->propertyExistsByTag($propertyTag)) {
             //vlastnost je definovana v CMS Buxus
-            $propertyId = $pm->getPropertyByTag($propertyTag)->getId();
-            $property = new \Buxus\Bql\Property($propertyId, $propertyTag, $this->aliasPrefix, $propertyAlias,false);
+            $buxusProperty = $pm->getPropertyByTag($propertyTag);
+
+            $property = new \Buxus\Bql\Property($buxusProperty->getId(), $propertyTag, $this->aliasPrefix, $propertyAlias,false,$buxusProperty->getClassId());
         }
         else {
             //vlastnost nie je definovana v CMS Buxus, bude povazovana za fyzicky stlpec databazy
-            $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true);
+            $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true,0);
         }
 
         array_push($this->properties, $property); //ulozenie vlastnosti do zoznamu

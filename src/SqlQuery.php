@@ -13,7 +13,7 @@ namespace Buxus\Bql;
  * Trieda reprezentujuca vysledny SQL dopyt
  * @package Buxus\Bql
  */
-class Query
+class SqlQuery
 {
     /**
      * Cast dopytu vztahujuca sa k prikazu SELECT

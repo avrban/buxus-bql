@@ -1,5 +1,6 @@
 <?php
-/**Created by PhpStorm.
+/**
+ * Created by PhpStorm.
  * User: avrban
  * Date: 19.03.2016
  * Time: 17:26
@@ -47,6 +48,7 @@ class Property
      * @var boolean
      */
     public $isColumn;
+    public $class_id;
 
     /**
      * Property constructor.
@@ -56,14 +58,14 @@ class Property
      * @param $alias
      * @param $isColumn
      */
-    public function __construct($id, $tag, $pageTypeAlias, $alias, $isColumn)
+    public function __construct($id, $tag, $pageTypeAlias, $alias, $isColumn, $class_id)
     {
         $this->id=$id;
         $this->tag=$tag;
         $this->pageTypeAlias=$pageTypeAlias;
         $this->alias=$alias;
         $this->isColumn=$isColumn;
+        $this->class_id=$class_id;
     }
 }
 ?>
-
