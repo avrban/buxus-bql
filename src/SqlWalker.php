@@ -11,7 +11,6 @@ namespace Buxus\Bql;
 use Buxus\PageType;
 use Buxus\Page;
 use Buxus\Property;
-use Buxus\Bql;
 
 /**
  * Trieda spracuvavajuca rozparsovany BQL dopyt do SQL dopytu

@@ -2,13 +2,13 @@
     "name": "buxus/bql",
   "autoload": {
     "psr-4": {
-      "Buxus\\Bql\\": "src/"
+      "Buxus\\Bql\\": "src/",
+      "Buxus\\Bql\\Tests": "src/tests"
     }
   },
   "version": "dev-master",
    "require": {
-        "buxus/pages": "*",
-        "doctrine/orm": "*",
+     "buxus/pages": "*",
 	"greenlion/php-sql-parser": "*",
 	"fpdo/fluentpdo": "dev-master"
     }

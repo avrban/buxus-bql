@@ -8,7 +8,6 @@
 
 namespace Buxus\Bql;
 
-use Buxus\Bql;
 use PHPSQLParser\PHPSQLParser;
 
 class BqlQuery extends \SelectQuery
