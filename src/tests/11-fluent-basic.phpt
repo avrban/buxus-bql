@@ -6,7 +6,8 @@ include_once dirname(__FILE__) . "/connect.inc.php";
 
 $SQLquery=$qb->from('eshop_product')->getSQL();
 
-print_r($pdo->query(SQLquery));
-
+$result=$pdo->query($SQLquery)->fetchAll();
+echo count($result)."\n";
 ?>
 --EXPECTF--
+14

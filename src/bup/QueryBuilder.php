@@ -9,16 +9,11 @@
 namespace Buxus\Bql;
 
 use FluentPDO;
-use FluentStructure;
-use PDO;
 
 class QueryBuilder extends FluentPDO
 {
-    function __construct(PDO $pdo=null) {
-        $this->pdo = $pdo;
+    function __construct() {
 
-            $structure = new FluentStructure;
-        $this->structure = $structure;
     }
 
     public function from($table) {

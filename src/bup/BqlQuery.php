@@ -8,13 +8,13 @@
 
 namespace Buxus\Bql;
 
+use Buxus\Bql;
 use PHPSQLParser\PHPSQLParser;
 
 class BqlQuery extends \SelectQuery
 {
-    public function getBQL($debug=false)
+    public function getBQL()
     {
-        $this->disableSmartJoin();
         $queryBQL = $this->getQuery(false);
         $queryParameters = $this->getParameters();
 
@@ -22,22 +22,20 @@ class BqlQuery extends \SelectQuery
             $queryBQL = str_replace('?', $curParam, $queryBQL);
         }
 
-        if($debug) echo $queryBQL."\n";
+        echo $queryBQL."\n";
 
         return $queryBQL;
     }
 
-    public function getSQL($debug=false)
+    public function getSQL()
     {
         $parser=new PHPSQLParser();
         $parsed=$parser->parse($this->getBQL()); //pole s rozparsovanym vstupnym dopytom
-        if($debug) print_r($parsed);
+        print_r($parsed);
 
         /*konverzia do SQL dopytu a vypis*/
         $walker=new SqlWalker($parsed,0);
-        $sql=$walker->getSQL($debug);
-
-        if($debug) echo $sql."\n";;
-        return $sql;
+        $sql=$walker->getSQL();
+        echo $sql."\n";
     }
 }

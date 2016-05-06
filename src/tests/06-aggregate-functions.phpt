@@ -1,14 +1,22 @@
 --TEST--
-select so zoradenim a limitom s offsetom
+test podporovanych agregacnych funkcii
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";
 
-/*TODO nefunguju aliasy*/
 $BQLquery="SELECT AVG(eshop_eur_price_without_vat) AS priemer, SUM(eshop_eur_price_without_vat) AS suma, MIN(eshop_eur_price_without_vat) AS minimum, MAX(eshop_eur_price_without_vat) AS maximum, COUNT(page_name) AS pocet FROM eshop_product";
-$SQLquery=$bql->getSQL($query);
+$SQLquery=$bql->getSQL($BQLquery);
 
-print_r($pdo->query(SQLquery));
-
+$result=$pdo->query($SQLquery)->fetchAll();
+echo round($result[0]["priemer"],2)."\n";
+echo $result[0]["suma"]."\n";
+echo $result[0]["minimum"]."\n";
+echo $result[0]["maximum"]."\n";
+echo $result[0]["pocet"]."\n";
 ?>
 --EXPECTF--
+34.96
+489.5
+1.5
+145
+14

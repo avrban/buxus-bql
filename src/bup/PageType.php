@@ -112,16 +112,8 @@ class PageType
             $property = new \Buxus\Bql\Property($buxusProperty->getId(), $propertyTag, $this->aliasPrefix, $propertyAlias,false,$buxusProperty->getClassId());
         }
         else {
-            //vlastnost nie je definovana v CMS Buxus
-            if(preg_match('/(page_id|page_name|page_tag|author_id|creation_date|page_type_id|page_state_id|parent_page_id|page_class_id|last_updated|sort_date_time|properties|last_updated_by_user_id)/',$propertyTag)==1){
-                //fyzicky stlpec tabulky tblPages
-                $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true,0);
-            }
-            else {
-                //alias
-                $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true,0,true);
-            }
-
+            //vlastnost nie je definovana v CMS Buxus, bude povazovana za fyzicky stlpec databazy
+            $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true,0);
         }
 
         array_push($this->properties, $property); //ulozenie vlastnosti do zoznamu

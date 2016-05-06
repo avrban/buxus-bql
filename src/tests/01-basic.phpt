@@ -5,9 +5,10 @@ jednoduchy select tabulky prostrednictvom BQL
 include_once dirname(__FILE__) . "/connect.inc.php";
 
 $BQLquery="SELECT * FROM eshop_product";
-$SQLquery=$bql->getSQL($query);
+$SQLquery=$bql->getSQL($BQLquery);
 
-print_r($pdo->query(SQLquery));
-
+$result=$pdo->query($SQLquery)->fetchAll();
+echo count($result)."\n";
 ?>
 --EXPECTF--
+14

@@ -43,15 +43,13 @@ class Property
      * @var string
      */
     public $whereClause;
-    public $havingClause;
     /**
      * Logicka premenna oznacujuca, ci sa jedna o fyzicky stlpec tabulky alebo vlastnost stranky
      * @var boolean
      */
     public $isColumn;
     public $class_id;
-    public $column;
-    public $isAlias=false;
+
     /**
      * Property constructor.
      * @param $id
@@ -60,7 +58,7 @@ class Property
      * @param $alias
      * @param $isColumn
      */
-    public function __construct($id, $tag, $pageTypeAlias, $alias, $isColumn, $class_id,$isAlias=false)
+    public function __construct($id, $tag, $pageTypeAlias, $alias, $isColumn, $class_id)
     {
         $this->id=$id;
         $this->tag=$tag;
@@ -68,7 +66,6 @@ class Property
         $this->alias=$alias;
         $this->isColumn=$isColumn;
         $this->class_id=$class_id;
-        $this->isAlias=$isAlias;
     }
 }
 ?>
