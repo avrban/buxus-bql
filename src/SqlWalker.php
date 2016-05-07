@@ -11,6 +11,7 @@ namespace Buxus\Bql;
 use Buxus\PageType;
 use Buxus\Page;
 use Buxus\Property;
+use Exception;
 
 /**
  * Trieda spracuvavajuca rozparsovany BQL dopyt do SQL dopytu
@@ -177,8 +178,7 @@ class SqlWalker
             $pageTypeId = $pm->getPageTypeByTag($pageTypeTag)->getId();
             $pageType = new \Buxus\Bql\PageType($pageTypeId, $pageTypeTag, $pageTypeAlias, "p" . $this->subqueryNo . "_" . $pageTypeAlias);
         } else {
-            //TODO: vyhodime exception alebo ho budeme brat ako fyzicku tabulku?
-            // $pageType = new \Buxus\Bql\PageType(null,$pageTypeTag, $pageTypeAlias, $pageTypeAlias,true);
+            throw new Exception('Neexistujuci typ stranky: '.$pageTypeTag);
         }
 
         array_push($this->pageTypes, $pageType); //vlozenie typu stranky do zoznamu
@@ -296,10 +296,7 @@ class SqlWalker
 
                 /*nacitanie/ulozenie vlastnosti (stlpca) zo/do zoznamu*/
                 $propertyPageType = $this->getPageTypeByTagOrAlias($propertyPageTypeAlias); //zistenie typu stranky (tabulky) ku ktoremu stlpec (vlastnost) patri
-                if ($propertyPageType == null) {
-                    //TODO: co ak neexistuje?
-                    continue;
-                }
+                if ($propertyPageType == null) continue;
 
                 $property = $propertyPageType->getPropertyByTag($propertyTag); //vyber danej vlastnosti (stlpcu) podla tagu
 
@@ -572,7 +569,6 @@ class SqlWalker
      *  ORDER BY ehsop_eur_price_without_vat"
      * - vyberie nazov a cenu pre vsetky produkty, pricom ich zoradi podla ceny
      *
-     * TODO: co s ciselnymi hodnotami? - cisla zoraduje ako string
      */
     public function walkOrderByClause()
     {
