@@ -3,8 +3,7 @@
 namespace Buxus\Bql;
 
 use Buxus\PageType;
-use Buxus\Page;
-use Buxus\Property;
+
 use Exception;
 
 /**
