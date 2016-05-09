@@ -1,5 +1,5 @@
 --TEST--
-select s group by
+Výber so zoskupovaním podľa vlastností stránok (GROUP BY) prostredníctvom Fluent rozhrania
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

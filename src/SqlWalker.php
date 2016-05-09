@@ -78,6 +78,12 @@ class SqlWalker
         return $this->sqlQuery->getSQL();
     }
 
+    /**
+     * Vyhladanie vlastnosti na zaklade nazvu stlpca z BQL dopytu
+     *
+     * @param $expr - cast rozparsovaneho BQL dopytu obsahujuca nazov stlpca
+     * @return \Buxus\Bql\Property : najdena / vytvorena vlastnost
+     */
     public function getPropertyFromExpr($expr)
     {
         if (count($expr["no_quotes"]["parts"]) == 3) {
@@ -105,10 +111,10 @@ class SqlWalker
         $property = $propertyPageType->getPropertyByTagOrAlias($propertyTag);
 
         if ($property == null && empty($propertyColumn)) {
-            if($expr["expr_type"]=="alias") $propertyIsAlias=true;
+            if ($expr["expr_type"] == "alias") $propertyIsAlias = true;
             $property = $propertyPageType->addProperty($propertyTag, "");
         }
-        if($property==null) return null;
+        if ($property == null) return null;
 
         if ($propertyColumn) $property->column = $propertyColumn;
         return $property;
@@ -117,7 +123,7 @@ class SqlWalker
     /**
      * Metoda na ziskanie typu stranky vyskytujuceho sa v dopyte podľa jeho tagu
      *
-     * @param $pageTypeTag
+     * @param $pageTypeTag : tag typu stranky
      * @return \Buxus\Bql\PageType
      */
     public function getPageTypeByTag($pageTypeTag)
@@ -135,7 +141,7 @@ class SqlWalker
     /**
      * Metoda na ziskanie typu stranky vyskytujuceho sa v dopyte podla jeho pouzivatelsky definovaneho aliasu
      *
-     * @param $pageTypeAlias
+     * @param $pageTypeAlias : alias typu stranky
      * @return \Buxus\Bql\PageType
      */
     public function getPageTypeByAlias($pageTypeAlias)
@@ -150,6 +156,12 @@ class SqlWalker
         return null;
     }
 
+    /**
+     * Metoda na ziskanie typu stranky vyskytujuceho sa v dopyte podla jeho tagu alebo aliasu
+     *
+     * @param $pageTypeParam : tag alebo alias typu stranky
+     * @return \Buxus\Bql\PageType
+     */
     public function getPageTypeByTagOrAlias($pageTypeParam)
     {
         if (!empty($this->pageTypes)) {
@@ -167,6 +179,7 @@ class SqlWalker
      *
      * @param $pageTypeTag : tag typu stranky
      * @param $pageTypeAlias : pouzivatelsky definovany alias typu stranky
+     * @throws Exception : neexistujuci typ stranky
      * @return \Buxus\Bql\PageType : instancia reprezentujuca dany typ stranky
      */
     public function addPageType($pageTypeTag, $pageTypeAlias)
@@ -178,7 +191,7 @@ class SqlWalker
             $pageTypeId = $pm->getPageTypeByTag($pageTypeTag)->getId();
             $pageType = new \Buxus\Bql\PageType($pageTypeId, $pageTypeTag, $pageTypeAlias, "p" . $this->subqueryNo . "_" . $pageTypeAlias);
         } else {
-            throw new Exception('Neexistujuci typ stranky: '.$pageTypeTag);
+            throw new Exception('Neexistujuci typ stranky: ' . $pageTypeTag);
         }
 
         array_push($this->pageTypes, $pageType); //vlozenie typu stranky do zoznamu
@@ -188,8 +201,8 @@ class SqlWalker
 
     /**
      * Metoda prechadzajuca vsetky typy stranok a ich vlastnosti vyskytujuce sa v dopyte
-     * Pre kazdu vlastnost sa do dopytu pridava JOIN tabulky hodnot vlastnosti (tblPagePropertyValues)
-     *
+     * Pre kazdu vlastnost sa do dopytu pridava JOIN tabulky hodnot vlastnosti
+     * (tblPagePropertyValues prip. tblLinkProperties)
      */
     public function walkPageTypes()
     {
@@ -197,7 +210,7 @@ class SqlWalker
             //prechadzanie vsetkymi typmi stranok v dopyte
             foreach ($this->pageTypes as $curPageType) {
                 $propertiesWhereClause = "";
-                $propertiesHavingClause="";
+                $propertiesHavingClause = "";
 
                 //prechadzanie vsetkymi vlastnostami vyskytujucimi sa v dopyte k danemu typu stranky
                 if (!empty($curPageType->properties)) {
@@ -217,9 +230,9 @@ class SqlWalker
                                     " AND lp_" . $curProperty->pageTypeAlias . ".property_id = " . $curProperty->id .
                                     " )";
 
-                                                                $this->sqlQuery->fromClause .= " JOIN tblPages lpp_" . $curProperty->pageTypeAlias .
-                                                                    " ON ( lp_" . $curProperty->pageTypeAlias . ".to_page_id = lpp_" . $curProperty->pageTypeAlias . ".page_id" .
-                                                                    " )";
+                                $this->sqlQuery->fromClause .= " JOIN tblPages lpp_" . $curProperty->pageTypeAlias .
+                                    " ON ( lp_" . $curProperty->pageTypeAlias . ".to_page_id = lpp_" . $curProperty->pageTypeAlias . ".page_id" .
+                                    " )";
                             }
                         }
 
@@ -233,11 +246,11 @@ class SqlWalker
 
                     }
                     if (!empty($propertiesWhereClause)) {
-                        if(!empty( $this->sqlQuery->whereClause)) $this->sqlQuery->whereClause .= " AND";
+                        if (!empty($this->sqlQuery->whereClause)) $this->sqlQuery->whereClause .= " AND";
                         $this->sqlQuery->whereClause .= " (" . $propertiesWhereClause . ")";
                     }
                     if (!empty($propertiesHavingClause)) {
-                        if(!empty( $this->sqlQuery->havingClause)) $this->sqlQuery->havingClause .= " AND";
+                        if (!empty($this->sqlQuery->havingClause)) $this->sqlQuery->havingClause .= " AND";
                         $this->sqlQuery->havingClause .= " (" . $propertiesHavingClause . ")";
                     }
                 }
@@ -302,8 +315,8 @@ class SqlWalker
 
                 if ($property == null) {
                     //vlastnost (stlpec) este nebola v dopyte pouzita
-                    if($selectPart["expr_type"]!="aggregate_function") $propertyAlias = $selectPart["alias"]["name"]; //pouzivatelsky definovany alias vlastnosti (stlpca)
-                    else $propertyAlias="";
+                    if ($selectPart["expr_type"] != "aggregate_function") $propertyAlias = $selectPart["alias"]["name"]; //pouzivatelsky definovany alias vlastnosti (stlpca)
+                    else $propertyAlias = "";
 
                     $property = $propertyPageType->addProperty($propertyTag, $propertyAlias); //pridanie danej vlastnosti (stlpca) do zoznamu patriacemu danej stranke (tabulke)
                 }
@@ -311,11 +324,10 @@ class SqlWalker
                 if (!empty($this->sqlQuery->selectClause)) $this->sqlQuery->selectClause .= ",";
 
                 /*zistenie aliasu vlastnosti, podla ktoreho bude moct pouzivatel k stlpcu pristupovat*/
-                if($selectPart["expr_type"]=="aggregate_function"){
-                    if($selectPart["alias"]["name"]) $propertyFullAlias = $selectPart["alias"]["name"]; //pouzivatelsky definovany alias vlastnosti (stlpca)
+                if ($selectPart["expr_type"] == "aggregate_function") {
+                    if ($selectPart["alias"]["name"]) $propertyFullAlias = $selectPart["alias"]["name"]; //pouzivatelsky definovany alias vlastnosti (stlpca)
                     else $propertyFullAlias = $selectPart["base_expr"] . "(" . $selectPart["sub_tree"][0]["base_expr"] . ")"; //generovany alias pre agregacnu funkciu
-                }
-                else {
+                } else {
                     if ($propertyAlias) $propertyFullAlias = $property->alias; //pouzivatelsky definovany alias
                     else $propertyFullAlias = $selectPart["base_expr"];
                 } //generovany alias podla tagu vlastnosti
@@ -401,8 +413,8 @@ class SqlWalker
                         //prechadzanie podmienkami spajania tabuliek
                         if ($refClause["expr_type"] == "colref") {
                             //jedna sa o vlastnost / stlpec
-                            $property=$this->getPropertyFromExpr($refClause);
-                            if($property==null) $this->sqlQuery->fromClause .= " " . $refClause["base_expr"];
+                            $property = $this->getPropertyFromExpr($refClause);
+                            if ($property == null) $this->sqlQuery->fromClause .= " " . $refClause["base_expr"];
 
                             if ($property->isColumn) {
                                 //jedna sa o fyzicky stlpec a nie o vlastnost, pridame ho do FROM klauzuly tak ako je
@@ -411,8 +423,7 @@ class SqlWalker
                                 if ($property->class_id == C_ppc_Extended) {
                                     //jedna sa o vlastnost, pridame ju do FROM klauzuly s jej prefixom
                                     $this->sqlQuery->fromClause .= " ppv_" . $property->pageTypeAlias . "." . $property->tag;
-                                }
-                                else if ($property->class_id == C_ppc_Link_multivalue) {
+                                } else if ($property->class_id == C_ppc_Link_multivalue) {
                                     //jedna sa o link vlastnost
                                     $property->whereClause .= " lp_" . $property->pageTypeAlias . "." . $property->column;
                                 }
@@ -464,15 +475,14 @@ class SqlWalker
                     $property = $this->getPropertyFromExpr($wherePart);
                     if ($property == null) {
                         continue;
-                    }   
+                    }
 
                     /*pridanie do where klauzuly*/
                     if ($property->isColumn) {
                         //jedna sa len o alias
-                        if($property->isAlias){
+                        if ($property->isAlias) {
                             $property->whereClause .= " " . $property->tag;
-                        }
-                        else {
+                        } else {
                             //jedna sa o fyzicky stlpec tabulky tblPages
                             $property->whereClause .= " " . $property->pageTypeAlias . "." . $property->tag;
                         }
@@ -482,7 +492,7 @@ class SqlWalker
                             $property->whereClause .= " ppv_" . $property->pageTypeAlias . ".property_value ";
 
                         } else if ($property->class_id == C_ppc_Link_multivalue) {
-                            //jedna sa o vlastnost
+                            //jedna sa o linkovaciu vlastnost
                             $property->whereClause .= " lp_" . $property->pageTypeAlias . "." . $property->column;
                         }
                     }
@@ -495,7 +505,7 @@ class SqlWalker
                         $lastProperty->whereClause .= " (" . $subQueryWalker->getSQL() . ")";
                     } //nejedna sa o vlastnost / stlpec ani o subquery, dame do WHERE klauzuly bezozmeny
                     else {
-                        if (preg_match('/[\W]+/',$wherePart["base_expr"])==0) $lastProperty->whereClause .= " ";
+                        if (preg_match('/[\W]+/', $wherePart["base_expr"]) == 0) $lastProperty->whereClause .= " ";
                         $lastProperty->whereClause .= $wherePart["base_expr"];
                     }
                 }
@@ -504,6 +514,9 @@ class SqlWalker
         }
     }
 
+    /**
+     * Metoda prechadzajuca klauzulou HAVING vstupneho BQL dopytu
+     */
     public function walkHavingClause()
     {
         $havingArray = $this->query["HAVING"];
@@ -524,10 +537,9 @@ class SqlWalker
                     /*pridanie do having klauzuly*/
                     if ($property->isColumn) {
                         //jedna sa len o alias
-                        if($property->isAlias){
+                        if ($property->isAlias) {
                             $property->havingClause .= " " . $property->tag;
-                        }
-                        else {
+                        } else {
                             //jedna sa o fyzicky stlpec tabulky tblPages
                             $property->havingClause .= " " . $property->pageTypeAlias . "." . $property->tag;
                         }
@@ -537,7 +549,7 @@ class SqlWalker
                             $property->havingClause .= " ppv_" . $property->pageTypeAlias . ".property_value ";
 
                         } else if ($property->class_id == C_ppc_Link_multivalue) {
-                            //jedna sa o vlastnost
+                            //jedna sa o linkovaciu vlastnost
                             $property->havingClause .= " lp_" . $property->pageTypeAlias . "." . $property->column;
                         }
                     }
@@ -550,7 +562,7 @@ class SqlWalker
                         $lastProperty->havingClause .= " (" . $subQueryWalker->getSQL() . ")";
                     } //nejedna sa o vlastnost / stlpec ani o subquery, dame do having klauzuly bezozmeny
                     else {
-                        if (preg_match('/[\W]+/',$havingPart["base_expr"])==0) $lastProperty->havingClause .= " ";
+                        if (preg_match('/[\W]+/', $havingPart["base_expr"]) == 0) $lastProperty->havingClause .= " ";
                         $lastProperty->havingClause .= $havingPart["base_expr"];
                     }
                 }
@@ -586,10 +598,9 @@ class SqlWalker
                 /*pridanie do ORDER BY klauzuly*/
                 if ($property->isColumn) {
                     //jedna sa len o alias
-                    if($property->isAlias){
+                    if ($property->isAlias) {
                         $this->sqlQuery->orderByClause .= " " . $property->tag;
-                    }
-                    else {
+                    } else {
                         //jedna sa o fyzicky stlpec tabulky tblPages
                         $this->sqlQuery->orderByClause .= " " . $property->pageTypeAlias . "." . $property->tag;
                     }
@@ -599,8 +610,8 @@ class SqlWalker
                         $this->sqlQuery->orderByClause .= " ppv_" . $property->pageTypeAlias . ".property_value +0";
                     } else if ($property->class_id == C_ppc_Link_multivalue) {
                         //jedna sa o linked vlastnost
-                        if(empty($property->column)) $property->column="property_id";
-                        $this->sqlQuery->orderByClause .= " lp_" . $property->pageTypeAlias . "." . $property->column." +0";
+                        if (empty($property->column)) $property->column = "property_id";
+                        $this->sqlQuery->orderByClause .= " lp_" . $property->pageTypeAlias . "." . $property->column . " +0";
                     }
                 }
 
@@ -611,6 +622,9 @@ class SqlWalker
 
     }
 
+    /**
+     * Metoda prechadzajuca klauzluou GROUP BY vstupneho BQL dopytu
+     */
     public function walkGroupByClause()
     {
         $groupByArray = $this->query["GROUP"];
@@ -630,10 +644,9 @@ class SqlWalker
                 /*pridanie do GROUP BY klauzuly*/
                 if ($property->isColumn) {
                     //jedna sa len o alias
-                    if($property->isAlias){
+                    if ($property->isAlias) {
                         $this->sqlQuery->groupByClause .= " " . $property->tag;
-                    }
-                    else {
+                    } else {
                         //jedna sa o fyzicky stlpec tabulky tblPages
                         $this->sqlQuery->groupByClause .= " " . $property->pageTypeAlias . "." . $property->tag;
                     }
@@ -642,7 +655,7 @@ class SqlWalker
                         //jedna sa o vlastnost
                         $this->sqlQuery->groupByClause .= " ppv_" . $property->pageTypeAlias . ".property_value";
                     } else if ($property->class_id == C_ppc_Link_multivalue) {
-                        //jedna sa o vlastnost
+                        //jedna sa o linkovaciu vlastnost
                         $this->sqlQuery->groupByClause .= " lp_" . $property->pageTypeAlias . "." . $property->column;
                     }
                 }
@@ -670,5 +683,3 @@ class SqlWalker
 
 
 }
-
-?>

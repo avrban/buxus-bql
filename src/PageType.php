@@ -42,7 +42,7 @@ class PageType
      * Zoznam vlastnosti pouzitych v dopyte k danemu typu stranky
      * @var array[Buxus\Bql\Property]
      */
-    public $properties=[];
+    public $properties = [];
 
     /**
      * PageType constructor.
@@ -53,18 +53,19 @@ class PageType
      */
     public function __construct($id, $tag, $alias, $aliasPrefix)
     {
-        $this->id=$id;
-        $this->tag=$tag;
-        $this->alias=$alias;
-        $this->aliasPrefix=$aliasPrefix;
+        $this->id = $id;
+        $this->tag = $tag;
+        $this->alias = $alias;
+        $this->aliasPrefix = $aliasPrefix;
     }
 
     /**
      * Metoda sluziaca na vyhladanie vlastnosti patriacej k typu stranky podla jej tagu
      * @param $propertyTag : tag hladanej vlastnosti
-     * @return \Buxus\Bql\Property
+     * @return \Buxus\Bql\Property : najdena vlastnost
      */
-    public function getPropertyByTag($propertyTag){
+    public function getPropertyByTag($propertyTag)
+    {
         if (!empty($this->properties)) {
             foreach ($this->properties as $curProperty) {
                 if ($curProperty->tag == $propertyTag) {
@@ -79,9 +80,10 @@ class PageType
      * Metoda sluziaca na vyhladanie vlastnosti patriacej k typu stranky podla jej tagu
      * alebo pouzivatelsky definovaneho aliasu
      * @param $propertyParam : tag alebo alias hladanej vlastnosti
-     * @return \Buxus\Bql\Property
+     * @return \Buxus\Bql\Property : najdena vlastnost
      */
-    public function getPropertyByTagOrAlias($propertyParam){
+    public function getPropertyByTagOrAlias($propertyParam)
+    {
         if (!empty($this->properties)) {
             foreach ($this->properties as $curProperty) {
                 if ($curProperty->tag == $propertyParam || $curProperty->alias == $propertyParam) {
@@ -100,26 +102,25 @@ class PageType
      * @param $propertyAlias : pouzivatelsky definovany alias pridavanej vlastnosti
      * @return \Buxus\Bql\Property : instancia reprezentujuca pridanu vlastnost
      */
-    public function addProperty($propertyTag, $propertyAlias){
-        if(empty($propertyAlias)) $propertyAlias=$propertyTag;
+    public function addProperty($propertyTag, $propertyAlias)
+    {
+        if (empty($propertyAlias)) $propertyAlias = $propertyTag;
 
         $pm = new Property\PropertyManager(); //manazer vlastnosti stranok CMS Buxus
 
-        if($pm->propertyExistsByTag($propertyTag)) {
+        if ($pm->propertyExistsByTag($propertyTag)) {
             //vlastnost je definovana v CMS Buxus
             $buxusProperty = $pm->getPropertyByTag($propertyTag);
 
-            $property = new \Buxus\Bql\Property($buxusProperty->getId(), $propertyTag, $this->aliasPrefix, $propertyAlias,false,$buxusProperty->getClassId());
-        }
-        else {
+            $property = new \Buxus\Bql\Property($buxusProperty->getId(), $propertyTag, $this->aliasPrefix, $propertyAlias, false, $buxusProperty->getClassId());
+        } else {
             //vlastnost nie je definovana v CMS Buxus
-            if(preg_match('/(page_id|page_name|page_tag|author_id|creation_date|page_type_id|page_state_id|parent_page_id|page_class_id|last_updated|sort_date_time|properties|last_updated_by_user_id)/',$propertyTag)==1){
+            if (preg_match('/(page_id|page_name|page_tag|author_id|creation_date|page_type_id|page_state_id|parent_page_id|page_class_id|last_updated|sort_date_time|properties|last_updated_by_user_id)/', $propertyTag) == 1) {
                 //fyzicky stlpec tabulky tblPages
-                $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true,0);
-            }
-            else {
+                $property = new \Buxus\Bql\Property(null, $propertyTag, $this->aliasPrefix, $propertyAlias, true, 0);
+            } else {
                 //alias
-                $property = new \Buxus\Bql\Property(null,$propertyTag, $this->aliasPrefix, $propertyAlias,true,0,true);
+                $property = new \Buxus\Bql\Property(null, $propertyTag, $this->aliasPrefix, $propertyAlias, true, 0, true);
             }
 
         }

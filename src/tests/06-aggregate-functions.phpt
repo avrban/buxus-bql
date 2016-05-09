@@ -1,5 +1,5 @@
 --TEST--
-test podporovanych agregacnych funkcii
+Výber s použitím agregačných funkcií (AVG(), SUM(), MIN(), MAX(), COUNT())
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

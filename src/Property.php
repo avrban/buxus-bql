@@ -43,15 +43,24 @@ class Property
      * @var string
      */
     public $whereClause;
+    /**
+     * Cast vysledneho dopytu k prikazu HAVING, vztahujuca sa k danej vlastnosti
+     * @var string
+     */
     public $havingClause;
     /**
      * Logicka premenna oznacujuca, ci sa jedna o fyzicky stlpec tabulky alebo vlastnost stranky
      * @var boolean
      */
     public $isColumn;
+    /**
+     * Identifikátor triedy určujúci, o akú vlastnosť sa jedná (C_ppc_Extended, C_ppc_Link_multivalue)
+     * @var int
+     */
     public $class_id;
     public $column;
-    public $isAlias=false;
+    public $isAlias = false;
+
     /**
      * Property constructor.
      * @param $id
@@ -59,16 +68,19 @@ class Property
      * @param $pageTypeAlias
      * @param $alias
      * @param $isColumn
+     * @param $class_id
+     * @param $isAlias
      */
-    public function __construct($id, $tag, $pageTypeAlias, $alias, $isColumn, $class_id,$isAlias=false)
+    public function __construct($id, $tag, $pageTypeAlias, $alias, $isColumn, $class_id, $isAlias = false)
     {
-        $this->id=$id;
-        $this->tag=$tag;
-        $this->pageTypeAlias=$pageTypeAlias;
-        $this->alias=$alias;
-        $this->isColumn=$isColumn;
-        $this->class_id=$class_id;
-        $this->isAlias=$isAlias;
+        $this->id = $id;
+        $this->tag = $tag;
+        $this->pageTypeAlias = $pageTypeAlias;
+        $this->alias = $alias;
+        $this->isColumn = $isColumn;
+        $this->class_id = $class_id;
+        $this->isAlias = $isAlias;
     }
 }
+
 ?>

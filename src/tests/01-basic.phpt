@@ -1,5 +1,5 @@
 --TEST--
-jednoduchy select tabulky prostrednictvom BQL
+Výber všetkých stránok zadaného typu (SELECT, FROM)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

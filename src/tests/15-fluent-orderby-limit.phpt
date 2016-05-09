@@ -1,5 +1,6 @@
 --TEST--
-select so zoradenim a limitom s offsetom
+Výber stránok so zoraďovaním podľa hodnôt ich vlastností, s preskočením určeného počtu stránok
+a obmedzením celkového počtu výsledkov (ORDER BY, LIMIT) prostredníctvom Fluent rozhrania
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

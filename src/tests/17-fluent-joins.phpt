@@ -1,5 +1,5 @@
 --TEST--
-jednoduchy select tabulky prostrednictvom BQL
+Výber vlastností z viacerých typov stránok (JOIN) prostredníctvom Fluent rozhrania
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

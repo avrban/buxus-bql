@@ -1,5 +1,5 @@
 --TEST--
-select na vybrane stlpce s pouzivatelsky definovanym aliasom
+Výber konkrétnych vlastností stránok s používateľsky definovaným aliasom (SELECT, AS)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

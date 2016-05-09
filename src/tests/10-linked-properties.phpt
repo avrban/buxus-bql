@@ -1,5 +1,6 @@
 --TEST--
-select s vyuzitim linked properties v agregacnej funkcii, filtrovanim s HAVING a zoradenim podla aliasov
+Výber linkovacej vlastnosti s použitím agregačnej funkcie, zoskupením podľa vlastnosti,
+filtrovaním podľa agregačnej funkcie a zoradením podľa viacerých vlastností (SELECT, GROUP BY, HAVING, ORDER BY)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

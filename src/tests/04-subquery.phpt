@@ -1,6 +1,5 @@
 --TEST--
-select s filtrovanim podla vnoreneho dopytu
-//AVG = 34.965
+Výber stránok s filtrovaním podľa hodnoty vnoreného dopytu (WHERE)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

@@ -1,5 +1,5 @@
 --TEST--
-test spajania tabuliek
+Výber vlastností z viacerých typov stránok (JOIN)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

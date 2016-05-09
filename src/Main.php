@@ -1,6 +1,11 @@
 <?php
 namespace Buxus\Bql;
 
+/**
+ * Trieda pre spustanie interpretera BQL jazyka prostrednictvom konzoly cez PHP command
+ *
+ * @package Buxus\Bql
+ */
 class Main
 {
     /**
@@ -8,12 +13,9 @@ class Main
      *
      * @param $query : BQL dopyt
      */
-    function execute($query){
+    function execute($query)
+    {
         $bq = new Bql();
-        echo $bq->getSQL($query,true)."\n";
-
-       /*$qb=new QueryBuilder();
-        echo $qb->from('eshop_product')->where('eshop_eur_price_without_vat >',100)->getSQL();*/
+        echo $bq->getSQL($query, true) . "\n";
     }
 }
-?>

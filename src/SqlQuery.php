@@ -56,15 +56,15 @@ class SqlQuery
      *
      * @return string : vysledny SQL dopyt
      */
-    public function getSQL(){
-        $query="SELECT".$this->selectClause;
-        if(!empty($this->fromClause)) $query.=" FROM".$this->fromClause;
-        if(!empty($this->whereClause)) $query.=" WHERE".$this->whereClause;
-        if(!empty($this->groupByClause)) $query.=" GROUP BY".$this->groupByClause;
-        if(!empty($this->havingClause)) $query.=" HAVING".$this->havingClause;
-        if(!empty($this->orderByClause)) $query.=" ORDER BY".$this->orderByClause;
-        if(!empty($this->limitClause)) $query.=" LIMIT".$this->limitClause;
+    public function getSQL()
+    {
+        $query = "SELECT" . $this->selectClause;
+        if (!empty($this->fromClause)) $query .= " FROM" . $this->fromClause;
+        if (!empty($this->whereClause)) $query .= " WHERE" . $this->whereClause;
+        if (!empty($this->groupByClause)) $query .= " GROUP BY" . $this->groupByClause;
+        if (!empty($this->havingClause)) $query .= " HAVING" . $this->havingClause;
+        if (!empty($this->orderByClause)) $query .= " ORDER BY" . $this->orderByClause;
+        if (!empty($this->limitClause)) $query .= " LIMIT" . $this->limitClause;
         return $query;
     }
 }
-?>

@@ -1,5 +1,5 @@
 --TEST--
-select s vyuzitim linked properties
+Výber linkovacej vlastnosti so zoradením podľa hodnoty sub-field (SELECT, ORDER BY)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

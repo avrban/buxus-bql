@@ -1,5 +1,5 @@
 --TEST--
-select so zoradenim a limitom s offsetom
+Výber s použitím agregačných funkcií (AVG(), SUM(), MIN(), MAX(), COUNT()) prostredníctvom Fluent rozhrania
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";

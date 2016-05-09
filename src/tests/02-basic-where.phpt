@@ -1,5 +1,5 @@
 --TEST--
-jednoduchy select tabulky s filtrovanim
+Výber všetkých stránok zadaného typu s filtrovaním podľa hodnoty vlastností (WHERE)
 --FILE--
 <?php
 include_once dirname(__FILE__) . "/connect.inc.php";
