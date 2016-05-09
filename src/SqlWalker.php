@@ -405,7 +405,7 @@ class SqlWalker
                     $this->sqlQuery->fromClause .= " " . $fromPart["join_type"] . " tblPages " . $pageType->aliasPrefix . " " . $fromPart["ref_type"]; //pridanie typu stranky do vyslednej FROM klauzuly s JOINom a aliasom
                     foreach ($fromPart["ref_clause"] as $refClause) {
                         //prechadzanie podmienkami spajania tabuliek
-                        if ($refClause["expr_type"] == "colref") {
+                        if ($refClause["expr_type"] == "colref" && $refClause["base_expr"][0]!=":") {
                             //jedna sa o vlastnost / stlpec
                             $property = $this->getPropertyFromExpr($refClause);
                             if ($property == null) $this->sqlQuery->fromClause .= " " . $refClause["base_expr"];
@@ -464,7 +464,7 @@ class SqlWalker
             //prechadzanie WHERE klauzuly
             foreach ($whereArray as $wherePart) {
 
-                if ($wherePart["expr_type"] == "colref" || $wherePart["expr_type"] == "alias") {
+                if (($wherePart["expr_type"] == "colref" || $wherePart["expr_type"] == "alias") && $wherePart["base_expr"][0]!=":") {
 
                     $property = $this->getPropertyFromExpr($wherePart);
                     if ($property == null) {
@@ -521,7 +521,7 @@ class SqlWalker
             //prechadzanie having klauzuly
             foreach ($havingArray as $havingPart) {
 
-                if ($havingPart["expr_type"] == "colref" || $havingPart["expr_type"] == "alias") {
+                if ($havingPart["expr_type"] == "colref" || $havingPart["expr_type"] == "alias" && $havingPart["base_expr"][0]!=":") {
 
                     $property = $this->getPropertyFromExpr($havingPart);
                     if ($property == null) {
