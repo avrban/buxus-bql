@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: avrban
- * Date: 19.03.2016
- * Time: 17:26
- */
 
 namespace Buxus\Bql;
 
